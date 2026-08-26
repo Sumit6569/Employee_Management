@@ -1,0 +1,48 @@
+import { useParams } from "react-router-dom";
+import type { Employee } from "../../Types/EmployeeTypes";
+import { employees } from "../../data/Employeedata";
+
+interface EmployeeDetailsProps {
+  employee?: Employee | null;
+}
+
+function EmployeeDetails({
+  employee: employeeProp,
+}: EmployeeDetailsProps) {
+  const { id } = useParams();
+
+  const employee =
+    employeeProp ??
+    employees.find(
+      (employee) => employee.id === Number(id)
+    );
+
+  if (!employee) {
+    return (
+      <div className="rounded-xl bg-white p-6 shadow-sm">
+        <h2 className="text-xl font-bold text-red-600">
+          Employee Not Found
+        </h2>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-xl bg-white p-6 shadow-sm">
+      <h2 className="text-xl font-bold">
+        Employee Details
+      </h2>
+
+      <div className="mt-4 space-y-2">
+        <p>Name: {employee.name}</p>
+        <p>Email: {employee.email}</p>
+        <p>Department: {employee.department}</p>
+        <p>Role: {employee.role}</p>
+        <p>Joining Date: {employee.joiningDate}</p>
+        <p>Status: {employee.status}</p>
+      </div>
+    </div>
+  );
+}
+
+export default EmployeeDetails;
