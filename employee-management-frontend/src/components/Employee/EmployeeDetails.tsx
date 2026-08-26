@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import type { Employee } from "../../Types/EmployeeTypes";
 import { employees } from "../../data/Employeedata";
 
@@ -10,7 +10,7 @@ function EmployeeDetails({
   employee: employeeProp,
 }: EmployeeDetailsProps) {
   const { id } = useParams();
-
+  const navigate = useNavigate();
   const employee =
     employeeProp ??
     employees.find(
@@ -29,6 +29,12 @@ function EmployeeDetails({
 
   return (
     <div className="rounded-xl bg-white p-6 shadow-sm">
+      <button
+      onClick={()=>navigate('/employees')}
+  className="mb-6 rounded-lg bg-gray-200 px-4 py-2"
+>
+  ← Back to Employees
+</button>
       <h2 className="text-xl font-bold">
         Employee Details
       </h2>

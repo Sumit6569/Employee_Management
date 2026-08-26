@@ -4,6 +4,7 @@ import AppLayout from "./Layout/AppLayOut";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Employees from "./components/Employee/Employee";
 import EmployeeDetails from "./components/Employee/EmployeeDetails";
+import NotFound from "./components/NotFound/NotFound";
 function App() {
   return (
     <Routes>
@@ -15,6 +16,8 @@ function App() {
            element={<EmployeeDetails />}
           />
       </Route>
+      <Route path="*" element={<NotFound/>} />
+
     </Routes>
   );
 }

@@ -23,6 +23,7 @@ function EmployeeList({ employees }: EmployeeListProps) {
             onEmployeeClick={onEmployeeClick}
           /> */}
           <EmployeeCard
+          
             employee={employee}
             
           />
