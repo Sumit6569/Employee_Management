@@ -4,20 +4,13 @@ import { employees } from "../../data/Employeedata";
 import type { Employee } from "../../Types/EmployeeTypes";
 import EmployeeDetails from "./EmployeeDetails";
 import useEmployeeFilters from "../../hooks/useEmployeeFilters";
-
+import useEmployee from "../../hooks/useEmployees";
 function Employees() {
 
 
   const {filterdEmployee,search,setSearch,department,setDepartment,status,setStatus} =  useEmployeeFilters(employees);
-  // const [employee,setEmployee] = useState<Employee | null>(null);
-  const [isLoading,setLoading] = useState(true);
-
-
-  // const handleEmployeeClick = (employee:Employee)=>{
-  //   console.log("emp from parent",employee);
-  //   setEmployee(employee);
-  // }
-
+ 
+  const {employee,error,isLoading} = useEmployee();
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(()=>{
