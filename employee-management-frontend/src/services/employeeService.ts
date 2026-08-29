@@ -1,4 +1,5 @@
 // import Employee from "../components/Employee/Employee";
+
 import type { Employee } from "../Types/EmployeeTypes";
 const API_URL = "http://localhost:8000";
 
@@ -14,7 +15,17 @@ export async function getEmployees(): Promise<Employee[]> {
         }
 
         const result = await response.json();
+        console.log("result",result.data);
         return result.data;
         
 } 
 
+export async function getEmployeeById(id:number):Promise<Employee> {
+    const employee = await fetch(`${API_URL}/employees/${id}`);
+    if(!employee.ok){
+        throw new Error("something went wrong")
+    }
+    const result = await employee.json();
+    console.log("Employee by id",result.data);
+    return result.data;
+}

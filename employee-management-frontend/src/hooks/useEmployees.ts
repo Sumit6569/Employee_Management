@@ -5,7 +5,7 @@ import { getEmployees } from "../services/employeeService";
 
 
 function useEmployee(){
-    const [employee,setEmpolyee]= useState<Employee[] | null>(null);
+    const [employee,setEmpolyee]= useState<Employee[]| []>([]);
     const [isLoading,setLoading]= useState(true);
     const [error,setError]  = useState<string | null>(null);
 
@@ -29,6 +29,9 @@ function useEmployee(){
             
         }
     }
+
+
+    console.log(employee);
 
     
 

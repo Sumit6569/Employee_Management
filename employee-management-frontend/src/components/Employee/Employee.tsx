@@ -7,19 +7,18 @@ import useEmployeeFilters from "../../hooks/useEmployeeFilters";
 import useEmployee from "../../hooks/useEmployees";
 function Employees() {
 
-
-  const {filterdEmployee,search,setSearch,department,setDepartment,status,setStatus} =  useEmployeeFilters(employees);
- 
   const {employee,error,isLoading} = useEmployee();
+  console.log(employee);
+  const {filterdEmployee,search,setSearch,department,setDepartment,status,setStatus} =  useEmployeeFilters(employee);
+ 
+  
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(()=>{
-    setTimeout(()=>{
-      setLoading(false);
-    },1500)
-    // inputRef.current?.focus();
+   
   
   },[]);
+
 useEffect(() => {
   if (!isLoading) {
     inputRef.current?.focus();
@@ -72,7 +71,7 @@ useEffect(() => {
   <option value="Inactive">Inactive</option>
   
     </select>
-       // old Code for state lift up
+      
       {/* <EmployeeList employees={filterdEmployee} onEmployeeClick={handleEmployeeClick}/> */}
        <EmployeeList employees={filterdEmployee}/>
      {/* {employee && <EmployeeDetails employee={employee}/>} */}
