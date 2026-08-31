@@ -25,7 +25,7 @@ function Employees() {
     updateEmployee,
     isUpdating,
 
-    
+    deleteEmployee,
   } = useEmployees();
 
   const {
@@ -158,6 +158,7 @@ function Employees() {
       <EmployeeList
         employees={filterdEmployee}
         onEdit={handleEdit}
+        onDelete={deleteEmployee}
       />
     </section>
   );

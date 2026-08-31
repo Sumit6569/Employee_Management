@@ -109,7 +109,7 @@ function useEmployees(): UseEmployeesReturn {
        setError(
       error instanceof Error
         ? error.message
-        : "Failed to update employee")
+        : "Failed to delete employee")
     }
    
   }
