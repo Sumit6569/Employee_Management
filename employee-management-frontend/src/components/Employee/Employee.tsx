@@ -42,6 +42,7 @@ function Employees() {
     selectedEmployee,
     setSelectedEmployee,
   ] = useState<Employee | null>(null);
+  const[showCreateEmployeeForm,setShowCreateEmployeeFrom] = useState(false);
 
   const inputRef =
     useRef<HTMLInputElement | null>(null);
@@ -141,11 +142,11 @@ function Employees() {
           Inactive
         </option>
       </select>
+      <button onClick={()=>setShowCreateEmployeeFrom(!showCreateEmployeeForm)}  className="rounded-lg bg-yellow-600 px-4 py-2 text-sm text-white hover:bg-pink-700 ml-6"> CreateEmloyee</button>
 
-      <CreateEmployee
-        onSubmit={createEmployee}
-        isSubmitting={isCreating}
-      />
+      
+        { showCreateEmployeeForm &&   <CreateEmployee onSubmit={createEmployee} isSubmitting={isCreating}/>}
+    
 
       {selectedEmployee && (
         <UpdateEmployee
