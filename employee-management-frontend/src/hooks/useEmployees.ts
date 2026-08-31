@@ -1,21 +1,29 @@
 import { useEffect, useState } from "react";
+
 import type {
+  CreateEmployeeInput,
   Employee,
-  
 } from "../Types/EmployeeTypes";
-import { getEmployees } from "../services/employeeService";
+
+import {
+  getEmployees,
+  createEmployee as createEmployeeApi,
+} from "../services/employeeService";
 
 interface UseEmployeesReturn {
   employees: Employee[];
   isLoading: boolean;
   error: string | null;
+  isCreating: boolean;
+
+  createEmployee: (
+    employee: CreateEmployeeInput
+  ) => Promise<void>;
 }
 
 function useEmployees(): UseEmployeesReturn {
   const [employees, setEmployees] =
     useState<Employee[]>([]);
-
- 
 
   const [isLoading, setIsLoading] =
     useState(true);
@@ -23,35 +31,59 @@ function useEmployees(): UseEmployeesReturn {
   const [error, setError] =
     useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchEmployees(): Promise<void> {
-      try {
-        setIsLoading(true);
-        setError(null);
+  const [isCreating, setIsCreating] =
+    useState(false);
 
-        const result = await getEmployees();
+  async function fetchEmployees(): Promise<void> {
+    try {
+      setIsLoading(true);
+      setError(null);
 
-        setEmployees(result.data);
-        
-      } catch (error: unknown) {
-        setError(
-          error instanceof Error
-            ? error.message
-            : "Something went wrong"
-        );
-      } finally {
-        setIsLoading(false);
-      }
+      const result = await getEmployees();
+
+      setEmployees(result);
+    } catch (error: unknown) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong"
+      );
+    } finally {
+      setIsLoading(false);
     }
+  }
 
+  useEffect(() => {
     fetchEmployees();
   }, []);
 
+  async function createEmployee(
+    employee: CreateEmployeeInput
+  ): Promise<void> {
+    try {
+      setIsCreating(true);
+      setError(null);
+
+      await createEmployeeApi(employee);
+
+      await fetchEmployees();
+    } catch (error: unknown) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Failed to create Employee"
+      );
+    } finally {
+      setIsCreating(false);
+    }
+  }
+
   return {
     employees,
-
     isLoading,
     error,
+    isCreating,
+    createEmployee,
   };
 }
 
