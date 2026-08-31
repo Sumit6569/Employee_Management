@@ -9,6 +9,7 @@ import {
   getEmployees,
   createEmployee as createEmployeeApi,
   updateEmployee as updateEmployeeApi,
+  deleteEmployee as deleteEmployeeApi
 
 } from "../services/employeeService";
 
@@ -24,6 +25,8 @@ interface UseEmployeesReturn {
 
   isUpdating:boolean,
   updateEmployee:(id:number,employee:CreateEmployeeInput)=>Promise<void>;
+
+  deleteEmployee:(id:number)=>Promise<void>
 }
 
 function useEmployees(): UseEmployeesReturn {
@@ -98,6 +101,19 @@ function useEmployees(): UseEmployeesReturn {
       }
   }
 
+  async function deleteEmployee(id:number) {
+    try {
+       await deleteEmployeeApi(id);
+       await fetchEmployees();
+    } catch (error) {
+       setError(
+      error instanceof Error
+        ? error.message
+        : "Failed to update employee")
+    }
+   
+  }
+
 
    useEffect(() => {
     fetchEmployees();
@@ -110,7 +126,8 @@ function useEmployees(): UseEmployeesReturn {
     isCreating,
     createEmployee,
     isUpdating,
-    updateEmployee
+    updateEmployee,
+    deleteEmployee
   };
 }
 

@@ -1,15 +1,20 @@
 import type { Employee } from "../../Types/EmployeeTypes";
-
+import { Link } from "react-router-dom";
+import useEmployee from "../../hooks/useEmployeeFilters";
+import useEmployees from "../../hooks/useEmployees";
 interface EmployeeCardProps {
   employee: Employee;
   // onEmployeeClick: (employee: Employee) => void;
   onEdit:()=>void
+  
 }
 
 function EmployeeCard({
   employee,
   onEdit
 }: EmployeeCardProps) {
+
+  const{deleteEmployee} = useEmployees();
   return (
     <div
       // onClick={() => onEmployeeClick(employee)}
@@ -42,20 +47,43 @@ function EmployeeCard({
         </p>
       </div>
 
-      <div className="mt-4">
-        <span
-          className={
-            employee.status === "Active"
-              ? "rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700"
-              : "rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700"
-          }
-        >
-          {employee.status}
-        </span>
-        <button onClick={onEdit}>
-  Edit
-</button>
-      </div>
+     <div className="mt-4 flex items-center gap-3">
+  <span
+    className={
+      employee.status === "Active"
+        ? "rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700"
+        : "rounded-full bg-red-100 px-3 py-1 text-xs font-medium text-red-700"
+    }
+  >
+    {employee.status}
+  </span>
+
+  <Link
+    to={`/employees/${employee.id}`}
+    className="rounded-lg border px-4 py-2 text-sm"
+  >
+    View Details
+  </Link>
+
+  <button
+    type="button"
+    onClick={onEdit}
+    className="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white"
+  >
+    Edit
+  </button>
+
+
+
+
+    <button
+    type="button"
+    onClick={()=>deleteEmployee(employee.id)}
+    className="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white"
+  >
+    Delete
+  </button>
+</div>
     </div>
   );
 }

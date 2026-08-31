@@ -18,7 +18,12 @@ export async function post<T,D>(url:string,body:D) {
     return response.data.data;
 }
 export async function put<T,D>(url:string,body:D) {
-    const response = await httpClient.get<ApiResponse<T>>(url,body);
+    const response = await httpClient.put<ApiResponse<T>>(url,body);
+    return response.data.data;
+}
+
+export async function del(url: string) {
+    const response = await httpClient.delete(url);
     return response.data.data;
 }
 
