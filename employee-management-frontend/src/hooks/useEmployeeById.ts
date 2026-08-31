@@ -14,8 +14,8 @@ function useEmployeeById(id:number) {
     const featchEmployeeById =  async (id:number)=>{
         try {
             setLoading(true);
-            const response = await getEmployeeById(id);
-            setEmployee(res);
+            const employee = await getEmployeeById(id);
+            setEmployee(employee);
 
         } catch (error) {
               setError( error instanceof Error
