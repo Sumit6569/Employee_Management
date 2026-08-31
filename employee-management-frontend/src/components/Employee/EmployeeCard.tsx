@@ -3,11 +3,12 @@ import type { Employee } from "../../Types/EmployeeTypes";
 interface EmployeeCardProps {
   employee: Employee;
   // onEmployeeClick: (employee: Employee) => void;
+  onEdit:()=>void
 }
 
 function EmployeeCard({
   employee,
-  
+  onEdit
 }: EmployeeCardProps) {
   return (
     <div
@@ -51,6 +52,9 @@ function EmployeeCard({
         >
           {employee.status}
         </span>
+        <button onClick={onEdit}>
+  Edit
+</button>
       </div>
     </div>
   );

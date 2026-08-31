@@ -1,4 +1,4 @@
-import { get,post } from "./httpClient";
+import { get,post, put } from "./httpClient";
 import type {
   Employee,
   CreateEmployeeInput,
@@ -16,5 +16,9 @@ export async function getEmployeeById(id:number):Promise<Employee> {
 
 export async function createEmployee(employee: CreateEmployeeInput):Promise<Employee> {
     return post<Employee,CreateEmployeeInput>("/employees",employee); 
+}
+
+export async function updateEmployee(id:number,employee:CreateEmployeeInput):Promise<Employee> {
+  return put<Employee,CreateEmployeeInput>(`/employees/${id}`,employee);
 }
 

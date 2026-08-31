@@ -1,18 +1,29 @@
-import { useEffect, useRef } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import EmployeeList from "./EmployeeLIst";
 import CreateEmployee from "./CreateEmployee";
+import UpdateEmployee from "./updateEmployee";
 
 import useEmployeeFilters from "../../hooks/useEmployeeFilters";
 import useEmployees from "../../hooks/useEmployees";
+
+import type { Employee } from "../../Types/EmployeeTypes";
 
 function Employees() {
   const {
     employees,
     error,
     isLoading,
+
     createEmployee,
     isCreating,
+
+    updateEmployee,
+    isUpdating,
   } = useEmployees();
 
   const {
@@ -25,7 +36,26 @@ function Employees() {
     setStatus,
   } = useEmployeeFilters(employees);
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [
+    selectedEmployee,
+    setSelectedEmployee,
+  ] = useState<Employee | null>(null);
+
+  const inputRef =
+    useRef<HTMLInputElement | null>(null);
+
+  function handleEdit(employee: Employee): void {
+    setSelectedEmployee(employee);
+  }
+
+  async function handleUpdate(
+    id: number,
+    employee: Employee
+  ): Promise<void> {
+    await updateEmployee(id, employee);
+
+    setSelectedEmployee(null);
+  }
 
   useEffect(() => {
     if (!isLoading) {
@@ -97,9 +127,17 @@ function Employees() {
         }
         className="ml-10 mb-6 rounded-lg border border-gray-300 bg-white px-4 py-3"
       >
-        <option value="All">All</option>
-        <option value="Active">Active</option>
-        <option value="Inactive">Inactive</option>
+        <option value="All">
+          All
+        </option>
+
+        <option value="Active">
+          Active
+        </option>
+
+        <option value="Inactive">
+          Inactive
+        </option>
       </select>
 
       <CreateEmployee
@@ -107,8 +145,17 @@ function Employees() {
         isSubmitting={isCreating}
       />
 
+      {selectedEmployee && (
+        <UpdateEmployee
+          employee={selectedEmployee}
+          onSubmit={handleUpdate}
+          isSubmitting={isUpdating}
+        />
+      )}
+
       <EmployeeList
         employees={filterdEmployee}
+        onEdit={handleEdit}
       />
     </section>
   );

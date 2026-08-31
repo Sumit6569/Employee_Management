@@ -1,16 +1,18 @@
-import React from "react";
-import EmployeeCard from "./EmployeeCard";
-import type { Employee } from "../../Types/EmployeeTypes";
 import { Link } from "react-router-dom";
+
+import EmployeeCard from "./EmployeeCard";
+
+import type { Employee } from "../../Types/EmployeeTypes";
 
 interface EmployeeListProps {
   employees: Employee[];
-
-
+  onEdit: (employee: Employee) => void;
 }
 
-function EmployeeList({ employees }: EmployeeListProps) {
-
+function EmployeeList({
+  employees,
+  onEdit,
+}: EmployeeListProps) {
   return (
     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
       {employees.map((employee) => (
@@ -18,14 +20,9 @@ function EmployeeList({ employees }: EmployeeListProps) {
           key={employee.id}
           to={`/employees/${employee.id}`}
         >
-          {/* <EmployeeCard /// old code for State LiftUP
-            employee={employee}
-            onEmployeeClick={onEmployeeClick}
-          /> */}
           <EmployeeCard
-          
             employee={employee}
-            
+            onEdit={() => onEdit(employee)}
           />
         </Link>
       ))}

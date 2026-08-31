@@ -8,6 +8,8 @@ import type {
 import {
   getEmployees,
   createEmployee as createEmployeeApi,
+  updateEmployee as updateEmployeeApi,
+
 } from "../services/employeeService";
 
 interface UseEmployeesReturn {
@@ -19,20 +21,25 @@ interface UseEmployeesReturn {
   createEmployee: (
     employee: CreateEmployeeInput
   ) => Promise<void>;
+
+  isUpdating:boolean,
+  updateEmployee:(id:number,employee:CreateEmployeeInput)=>Promise<void>;
 }
 
 function useEmployees(): UseEmployeesReturn {
   const [employees, setEmployees] =
     useState<Employee[]>([]);
 
-  const [isLoading, setIsLoading] =
-    useState(true);
-
   const [error, setError] =
     useState<string | null>(null);
 
+  const [isLoading, setIsLoading] =
+    useState(true);
+
   const [isCreating, setIsCreating] =
     useState(false);
+
+  const[isUpdating,setIsUpdating] = useState(false);
 
   async function fetchEmployees(): Promise<void> {
     try {
@@ -52,11 +59,6 @@ function useEmployees(): UseEmployeesReturn {
       setIsLoading(false);
     }
   }
-
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
-
   async function createEmployee(
     employee: CreateEmployeeInput
   ): Promise<void> {
@@ -77,6 +79,29 @@ function useEmployees(): UseEmployeesReturn {
       setIsCreating(false);
     }
   }
+  async function updateEmployee(id:number,Employee:CreateEmployeeInput) {
+      try {
+        setIsUpdating(true);
+        setError(null);
+
+        await updateEmployeeApi(id,Employee);
+        await fetchEmployees();
+        
+      } catch (error) {
+         setError(
+      error instanceof Error
+        ? error.message
+        : "Failed to update employee"
+    );
+      }finally{
+        setIsUpdating(false);
+      }
+  }
+
+
+   useEffect(() => {
+    fetchEmployees();
+  }, []);
 
   return {
     employees,
@@ -84,6 +109,8 @@ function useEmployees(): UseEmployeesReturn {
     error,
     isCreating,
     createEmployee,
+    isUpdating,
+    updateEmployee
   };
 }
 
