@@ -1,21 +1,36 @@
 import { useParams,useNavigate } from "react-router-dom";
 import type { Employee } from "../../Types/EmployeeTypes";
 import { employees } from "../../data/Employeedata";
+import { useEffect } from "react";
+import useEmployeeById from "../../hooks/useEmployeeById";
 
 interface EmployeeDetailsProps {
   employee?: Employee | null;
 }
 
-function EmployeeDetails({
-  employee: employeeProp,
-}: EmployeeDetailsProps) {
+function EmployeeDetails() {
+
   const { id } = useParams();
+  const {employee,error,isLoading} = useEmployeeById(Number(id));
+
+  console.log("emp fr useid",employee);
   const navigate = useNavigate();
-  const employee =
-    employeeProp ??
-    employees.find(
-      (employee) => employee.id === Number(id)
+  useEffect(()=>{
+
+  },[])
+
+
+
+  
+  if (isLoading) {
+    return (
+      <div className="rounded-xl bg-white p-6 shadow-sm">
+        <h2 className="text-xl font-bold text-gray-500">
+          Loading employee details...
+        </h2>
+      </div>
     );
+  }
 
   if (!employee) {
     return (

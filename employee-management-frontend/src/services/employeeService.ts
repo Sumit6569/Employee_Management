@@ -1,31 +1,29 @@
-// import Employee from "../components/Employee/Employee";
+import httpClient from "./httpClient";
 
-import type { Employee } from "../Types/EmployeeTypes";
-const API_URL = "http://localhost:8000";
+import type {
+  Employee,
+  CreateEmployeeInput,
+  
+  ApiResponse,
+} from "../Types/EmployeeTypes";
 
 
 
-
-
-
-export async function getEmployees(): Promise<Employee[]> {
-        const response = await fetch(`${API_URL}/employees`);
-        if(!response.ok){
-            throw new Error("Failed to fetch employees");
-        }
-
-        const result = await response.json();
-        console.log("result",result.data);
-        return result.data;
+export async function getEmployees(): Promise<ApiResponse<Employee[]>> {
+        const employees = await httpClient.get<ApiResponse<Employee[]>>("/employees");
+        console.log("result",employees.data);
+        return employees.data;
         
 } 
 
 export async function getEmployeeById(id:number):Promise<Employee> {
-    const employee = await fetch(`${API_URL}/employees/${id}`);
-    if(!employee.ok){
-        throw new Error("something went wrong")
-    }
-    const result = await employee.json();
-    console.log("Employee by id",result.data);
-    return result.data;
+    const employee = await httpClient.get<ApiResponse<Employee>>(`/employee/${id}`); 
+    console.log("Employee by id",employee.data);
+    return employee.data.data;
 }
+
+export async function createEmployee(employee: CreateEmployeeInput):Promise<Employee> {
+    const response = await httpClient.post<ApiResponse<Employee>>("/employees",employee);
+    return response.data.data;
+}
+

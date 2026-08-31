@@ -4,10 +4,11 @@ import { employees } from "../../data/Employeedata";
 import type { Employee } from "../../Types/EmployeeTypes";
 import EmployeeDetails from "./EmployeeDetails";
 import useEmployeeFilters from "../../hooks/useEmployeeFilters";
-import useEmployee from "../../hooks/useEmployees";
+
+import useEmployees from "../../hooks/useEmployees";
 function Employees() {
 
-  const {employee,error,isLoading} = useEmployee();
+  const {employee,error,isLoading} = useEmployees();
   console.log(employee);
   const {filterdEmployee,search,setSearch,department,setDepartment,status,setStatus} =  useEmployeeFilters(employee);
  
