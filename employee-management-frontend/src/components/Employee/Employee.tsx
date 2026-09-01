@@ -15,18 +15,19 @@ import type { Employee } from "../../Types/EmployeeTypes";
 
 function Employees() {
   const {
+  state: {
     employees,
     error,
     isLoading,
-
-    createEmployee,
     isCreating,
-
-    updateEmployee,
     isUpdating,
-
+  },
+  actions: {
+    createEmployee,
+    updateEmployee,
     deleteEmployee,
-  } = useEmployees();
+  },
+} = useEmployees();
 
   const {
     filterdEmployee,
