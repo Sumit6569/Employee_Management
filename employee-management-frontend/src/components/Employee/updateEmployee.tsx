@@ -7,22 +7,26 @@ import { employeeSchema, type EmployeeFormData } from '../../Types/EmployeeSchem
 
 import useEmployees from '../../hooks/useEmployees';
 
-import type { Employee } from '../../Types/EmployeeTypes';
-import { useState } from 'react';
+import type { UpdateEmployeeInput } from '../../Types/EmployeeTypes';
 
 interface UpdateEmployeeProps {
   employee: Employee;
-  setSelectedEmployee:()=>void;
-  
+  onSubmit?: (id: number, employee: UpdateEmployeeInput) => Promise<void>;
+  onCancel?: () => void;
+  isSubmitting?: boolean;
 }
 
-function UpdateEmployee({ employee,setSelectedEmployee }: UpdateEmployeeProps) {
+function UpdateEmployee({
+  employee,
+  onSubmit: onSubmitProp,
+  isSubmitting: isSubmittingProp,
+}: UpdateEmployeeProps) {
   const { actions } = useEmployees();
-  const [showUpdateEmployeeForm, setShowUpdateEmployeeForm] = useState(false);
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting: isFormSubmitting },
   } = useForm<EmployeeFormData>({
     resolver: zodResolver(employeeSchema),
 
@@ -37,24 +41,23 @@ function UpdateEmployee({ employee,setSelectedEmployee }: UpdateEmployeeProps) {
   });
 
   async function onSubmit(data: EmployeeFormData): Promise<void> {
-    await actions.updateEmployee(employee.id, data);
-    setSelectedEmployee(null);
-    
-
+    if (onSubmitProp) {
+      await onSubmitProp(employee.id, data);
+    } else {
+      await actions.updateEmployee(employee.id, data);
+    }
   }
 
   return (
-    <>
-      <EmployeeForm
-        register={register}
-        errors={errors}
-        onSubmit={handleSubmit(onSubmit)}
-        isSubmitting={isSubmitting}
-        title="Edit Employee"
-        submitText="Save Changes"
-        submittingText="Saving..."
-      />
-    </>
+    <EmployeeForm
+      register={register}
+      errors={errors}
+      onSubmit={handleSubmit(onSubmit)}
+      isSubmitting={isSubmittingProp ?? isFormSubmitting}
+      title="Edit Employee"
+      submitText="Save Changes"
+      submittingText="Saving..."
+    />
   );
 }
 

@@ -144,7 +144,8 @@ function Employees() {
         <div className="mb-6">
           <UpdateEmployee
             employee={selectedEmployee}
-            setSelectedEmployee={setSelectedEmployee}
+            onSubmit={handleUpdate}
+            isSubmitting={isUpdating}
           />
         </div>
       )}
