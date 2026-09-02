@@ -11,23 +11,23 @@ import UpdateEmployee from "./updateEmployee";
 import useEmployeeFilters from "../../hooks/useEmployeeFilters";
 import useEmployees from "../../hooks/useEmployees";
 
-import type { Employee } from "../../Types/EmployeeTypes";
+import type { Employee, UpdateEmployeeInput } from "../../Types/EmployeeTypes";
 
 function Employees() {
   const {
-  state: {
-    employees,
-    error,
-    isLoading,
-    isCreating,
-    isUpdating,
-  },
-  actions: {
-    createEmployee,
-    updateEmployee,
-    deleteEmployee,
-  },
-} = useEmployees();
+    state: {
+      employees,
+      error,
+      isLoading,
+      isCreating,
+      isUpdating,
+    },
+    actions: {
+      createEmployee,
+      updateEmployee,
+      deleteEmployee,
+    },
+  } = useEmployees();
 
   const {
     filterdEmployee,
@@ -39,25 +39,17 @@ function Employees() {
     setStatus,
   } = useEmployeeFilters(employees);
 
-  const [
-    selectedEmployee,
-    setSelectedEmployee,
-  ] = useState<Employee | null>(null);
-  const[showCreateEmployeeForm,setShowCreateEmployeeFrom] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [showCreateEmployeeForm, setShowCreateEmployeeForm] = useState(false);
 
-  const inputRef =
-    useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   function handleEdit(employee: Employee): void {
     setSelectedEmployee(employee);
   }
 
-  async function handleUpdate(
-    id: number,
-    employee: Employee
-  ): Promise<void> {
+  async function handleUpdate(id: number, employee: UpdateEmployeeInput): Promise<void> {
     await updateEmployee(id, employee);
-
     setSelectedEmployee(null);
   }
 
@@ -68,93 +60,93 @@ function Employees() {
   }, [isLoading]);
 
   if (isLoading) {
-    return <h2>Loading Employees...</h2>;
+    return (
+      <div className="flex items-center justify-center p-12">
+        <p className="text-lg font-medium text-gray-600 dark:text-gray-400">Loading Employees...</p>
+      </div>
+    );
   }
 
   return (
     <section>
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">
-          Employees
-        </h2>
+      <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Employees
+          </h2>
+          <p className="mt-1 text-gray-500 dark:text-gray-400">
+            Manage your employee list and operations.
+          </p>
+        </div>
 
-        <p className="mt-1 text-gray-500">
-          Manage your employees.
-        </p>
+        <button
+          type="button"
+          onClick={() => setShowCreateEmployeeForm(!showCreateEmployeeForm)}
+          className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-xs hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors dark:focus:ring-offset-gray-900"
+        >
+          {showCreateEmployeeForm ? "Close Form" : "+ Create Employee"}
+        </button>
       </div>
 
       {error && (
-        <p className="mb-4 text-red-600">
+        <div className="mb-6 rounded-lg bg-red-50 dark:bg-red-950/50 p-4 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300">
           {error}
-        </p>
+        </div>
       )}
 
-      <input
-        ref={inputRef}
-        type="text"
-        value={search}
-        onChange={(event) =>
-          setSearch(event.target.value)
-        }
-        placeholder="Search employee..."
-        className="mb-6 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 outline-none focus:border-blue-500"
-      />
+      {/* Controls Bar */}
+      <div className="mb-6 grid gap-4 sm:grid-cols-12">
+        <div className="sm:col-span-6">
+          <input
+            ref={inputRef}
+            type="text"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search employee by name, email or role..."
+            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
+          />
+        </div>
 
-      <select
-        value={department}
-        onChange={(event) =>
-          setDepartment(event.target.value)
-        }
-        className="mb-6 rounded-lg border border-gray-300 bg-white px-4 py-3"
-      >
-        <option value="All">
-          All Departments
-        </option>
+        <div className="sm:col-span-3">
+          <select
+            value={department}
+            onChange={(event) => setDepartment(event.target.value)}
+            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
+          >
+            <option value="All">All Departments</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Design">Design</option>
+            <option value="Human Resources">Human Resources</option>
+          </select>
+        </div>
 
-        <option value="Engineering">
-          Engineering
-        </option>
+        <div className="sm:col-span-3">
+          <select
+            value={status}
+            onChange={(event) => setStatus(event.target.value)}
+            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
+          >
+            <option value="All">All Statuses</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
 
-        <option value="Design">
-          Design
-        </option>
-
-        <option value="Human Resources">
-          Human Resources
-        </option>
-      </select>
-
-      <select
-        value={status}
-        onChange={(event) =>
-          setStatus(event.target.value)
-        }
-        className="ml-10 mb-6 rounded-lg border border-gray-300 bg-white px-4 py-3"
-      >
-        <option value="All">
-          All
-        </option>
-
-        <option value="Active">
-          Active
-        </option>
-
-        <option value="Inactive">
-          Inactive
-        </option>
-      </select>
-      <button onClick={()=>setShowCreateEmployeeFrom(!showCreateEmployeeForm)}  className="rounded-lg bg-yellow-600 px-4 py-2 text-sm text-white hover:bg-pink-700 ml-6"> CreateEmloyee</button>
-
-      
-        { showCreateEmployeeForm &&   <CreateEmployee onSubmit={createEmployee} isSubmitting={isCreating}/>}
-    
+      {showCreateEmployeeForm && (
+        <div className="mb-6">
+          <CreateEmployee onSubmit={createEmployee} isSubmitting={isCreating} />
+        </div>
+      )}
 
       {selectedEmployee && (
-        <UpdateEmployee
-          employee={selectedEmployee}
-          onSubmit={handleUpdate}
-          isSubmitting={isUpdating}
-        />
+        <div className="mb-6">
+          <UpdateEmployee
+            employee={selectedEmployee}
+            onSubmit={handleUpdate}
+            isSubmitting={isUpdating}
+          />
+        </div>
       )}
 
       <EmployeeList

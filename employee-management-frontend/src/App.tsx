@@ -9,19 +9,15 @@ import Notification from "./components/Notification/Notification";
 function App() {
   return (
     <>
-    <Notification/>
-    <Routes>
-      <Route element={<AppLayout />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/employees" element={<Employees />} />
-        <Route
-           path="/employees/:id"
-           element={<EmployeeDetails />}
-          />
-      </Route>
-      <Route path="*" element={<NotFound/>} />
-
-    </Routes>
+      <Notification />
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/employees" element={<Employees />} />
+          <Route path="/employees/:id" element={<EmployeeDetails />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </>
   );
 }

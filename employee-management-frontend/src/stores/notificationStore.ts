@@ -1,12 +1,14 @@
 import { create } from "zustand";
 
+type NotificationType = "success" | "error";
+
 interface NotificationState {
   message: string | null;
-  type: "success" | "error" | null;
+  type: NotificationType | null;
 
   showNotification: (
     message: string,
-    type: "success" | "error"
+    type: NotificationType
   ) => void;
 
   clearNotification: () => void;

@@ -1,5 +1,4 @@
 import type { Employee } from "../Types/EmployeeTypes";
-import { employees } from "../data/Employeedata";
 import { useState } from "react";
 
 function useEmployeeFilters(employees:Employee[]){

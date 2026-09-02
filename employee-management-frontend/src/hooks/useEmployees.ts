@@ -11,7 +11,7 @@ import {
   updateEmployee as updateEmployeeApi,
   deleteEmployee as deleteEmployeeApi,
 } from "../services/employeeService";
-
+import useNotificationStore from "../stores/notificationStore";
 interface EmployeeState {
   employees: Employee[];
   error: string | null;
@@ -55,6 +55,8 @@ function useEmployees(): UseEmployeesReturn {
       isUpdating: false,
     });
 
+    const showNotification = useNotificationStore((store)=>store.showNotification)
+
   async function fetchEmployees(): Promise<void> {
     try {
       setState((previous) => ({
@@ -96,9 +98,16 @@ function useEmployees(): UseEmployeesReturn {
       }));
 
       await createEmployeeApi(employee);
-
+      showNotification(
+         "Employee created successfully",
+          "success"
+       );
       await fetchEmployees();
     } catch (error: unknown) {
+        const message =
+      error instanceof Error
+        ? error.message
+        : "Failed to create employee";
       setState((previous) => ({
         ...previous,
         error:
@@ -106,6 +115,8 @@ function useEmployees(): UseEmployeesReturn {
             ? error.message
             : "Failed to create employee",
       }));
+
+      showNotification(message,"error")
     } finally {
       setState((previous) => ({
         ...previous,
@@ -126,9 +137,17 @@ function useEmployees(): UseEmployeesReturn {
       }));
 
       await updateEmployeeApi(id, employee);
-
+      showNotification(
+         "Employee updated successfully",
+          "success"
+       );
       await fetchEmployees();
     } catch (error: unknown) {
+
+        const message =
+      error instanceof Error
+        ? error.message
+        : "Failed to create employee";
       setState((previous) => ({
         ...previous,
         error:
@@ -136,6 +155,8 @@ function useEmployees(): UseEmployeesReturn {
             ? error.message
             : "Failed to update employee",
       }));
+
+      showNotification(message,"error")
     } finally {
       setState((previous) => ({
         ...previous,
@@ -154,9 +175,19 @@ function useEmployees(): UseEmployeesReturn {
       }));
 
       await deleteEmployeeApi(id);
-
+       showNotification(
+         "Employee deleted successfully",
+          "success"
+      );
       await fetchEmployees();
     } catch (error: unknown) {
+
+        const message =
+      error instanceof Error
+        ? error.message
+        : "Failed to create employee";
+
+
       setState((previous) => ({
         ...previous,
         error:
@@ -164,6 +195,8 @@ function useEmployees(): UseEmployeesReturn {
             ? error.message
             : "Failed to delete employee",
       }));
+
+      showNotification(message,"error");
     }
   }
 
