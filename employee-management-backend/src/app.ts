@@ -3,6 +3,7 @@ import cors from "cors";
 import { FRONTEND_URL } from "./config/env.js";
 import { checkDatabaseConnection } from "./config/database.js";
 import employeeRoutes from "./routes/employeeRoutes.js";
+import reportRoutes from "./routes/reportRoutes.js";
 import { notFound } from "./middleware/notFound.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 
@@ -53,6 +54,7 @@ app.get("/health", async (_req, res) => {
 
 // Mount domain routes
 app.use("/employees", employeeRoutes);
+app.use("/reports", reportRoutes);
 
 // Handle unknown routes & errors
 app.use(notFound);

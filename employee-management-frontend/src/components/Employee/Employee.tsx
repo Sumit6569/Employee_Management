@@ -1,43 +1,22 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from 'react';
 
-import EmployeeList from "./EmployeeLIst";
-import CreateEmployee from "./CreateEmployee";
-import UpdateEmployee from "./updateEmployee";
+import EmployeeList from './EmployeeLIst';
+import CreateEmployee from './CreateEmployee';
+import UpdateEmployee from './updateEmployee';
 
-import useEmployeeFilters from "../../hooks/useEmployeeFilters";
-import useEmployees from "../../hooks/useEmployees";
+import useEmployeeFilters from '../../hooks/Employee/useEmployeeFilters';
+import useEmployees from '../../hooks/Employee/useEmployees';
 
-import type { Employee, UpdateEmployeeInput } from "../../Types/EmployeeTypes";
+import type { Employee, UpdateEmployeeInput } from '../../Types/EmployeeTypes';
 
 function Employees() {
   const {
-    state: {
-      employees,
-      error,
-      isLoading,
-      isCreating,
-      isUpdating,
-    },
-    actions: {
-      createEmployee,
-      updateEmployee,
-      deleteEmployee,
-    },
+    state: { employees, error, isLoading, isCreating, isUpdating },
+    actions: { createEmployee, updateEmployee, deleteEmployee },
   } = useEmployees();
 
-  const {
-    filterdEmployee,
-    search,
-    setSearch,
-    department,
-    setDepartment,
-    status,
-    setStatus,
-  } = useEmployeeFilters(employees);
+  const { filterdEmployee, search, setSearch, department, setDepartment, status, setStatus } =
+    useEmployeeFilters(employees);
 
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [showCreateEmployeeForm, setShowCreateEmployeeForm] = useState(false);
@@ -72,9 +51,7 @@ function Employees() {
     <section>
       <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Employees
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Employees</h2>
           <p className="mt-1 text-gray-500 dark:text-gray-400">
             Manage your employee list and operations.
           </p>
@@ -85,7 +62,7 @@ function Employees() {
           onClick={() => setShowCreateEmployeeForm(!showCreateEmployeeForm)}
           className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-xs hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors dark:focus:ring-offset-gray-900"
         >
-          {showCreateEmployeeForm ? "Close Form" : "+ Create Employee"}
+          {showCreateEmployeeForm ? 'Close Form' : '+ Create Employee'}
         </button>
       </div>
 
@@ -150,11 +127,7 @@ function Employees() {
         </div>
       )}
 
-      <EmployeeList
-        employees={filterdEmployee}
-        onEdit={handleEdit}
-        onDelete={deleteEmployee}
-      />
+      <EmployeeList employees={filterdEmployee} onEdit={handleEdit} onDelete={deleteEmployee} />
     </section>
   );
 }

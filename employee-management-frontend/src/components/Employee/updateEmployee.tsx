@@ -5,7 +5,7 @@ import EmployeeForm from './EmloyeeForm';
 
 import { employeeSchema, type EmployeeFormData } from '../../Types/EmployeeSchema';
 
-import useEmployees from '../../hooks/useEmployees';
+import useEmployees from '../../hooks/Employee/useEmployees';
 
 import type { UpdateEmployeeInput } from '../../Types/EmployeeTypes';
 

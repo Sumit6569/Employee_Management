@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import type { Employee } from '../Types/EmployeeTypes';
-import { getEmployeeById } from '../services/employeeService';
+import type { Employee } from '../../Types/EmployeeTypes';
+import { getEmployeeById } from '../../services/employeeService';
 
 function useEmployeeById(id: number) {
   const [employee, setEmployee] = useState<Employee | null>(null);
@@ -20,9 +20,7 @@ function useEmployeeById(id: number) {
         const data = await getEmployeeById(id);
         setEmployee(data);
       } catch (err: unknown) {
-        setError(
-          err instanceof Error ? err.message : "Something went wrong"
-        );
+        setError(err instanceof Error ? err.message : 'Something went wrong');
       } finally {
         setLoading(false);
       }
