@@ -41,6 +41,7 @@ function Employees() {
 
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [showCreateEmployeeForm, setShowCreateEmployeeForm] = useState(false);
+  const [showUpdateEmployeeForm, setShowUpdateEmployeeForm] = useState(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -143,8 +144,7 @@ function Employees() {
         <div className="mb-6">
           <UpdateEmployee
             employee={selectedEmployee}
-            onSubmit={handleUpdate}
-            isSubmitting={isUpdating}
+            setSelectedEmployee={setSelectedEmployee}
           />
         </div>
       )}

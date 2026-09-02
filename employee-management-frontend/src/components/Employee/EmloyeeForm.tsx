@@ -1,25 +1,29 @@
-import React from "react";
-import type { UpdateEmployeeInput } from "../../Types/EmployeeTypes";
+import type {
+  FieldErrors,
+  UseFormRegister,
+} from "react-hook-form";
+
+import type { EmployeeFormData } from "../../Types/EmployeeSchema";
 
 interface EmployeeFormProps {
-  formData: UpdateEmployeeInput;
-  onChange: (
-    event: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement
-    >
-  ) => void;
-  onSubmit: (
-    event: React.FormEvent<HTMLFormElement>
-  ) => void;
+  register: UseFormRegister<EmployeeFormData>;
+
+  errors: FieldErrors<EmployeeFormData>;
+
+  onSubmit: React.FormEventHandler<HTMLFormElement>;
+
   isSubmitting: boolean;
+
   title: string;
+
   submitText: string;
+
   submittingText: string;
 }
 
 function EmployeeForm({
-  formData,
-  onChange,
+  register,
+  errors,
   onSubmit,
   isSubmitting,
   title,
@@ -27,117 +31,172 @@ function EmployeeForm({
   submittingText,
 }: EmployeeFormProps) {
   return (
-    <form
-      onSubmit={onSubmit}
-      className="space-y-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 shadow-xs transition-colors"
-    >
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+    <div>
+      <h2 className="mb-6 text-2xl font-bold">
         {title}
       </h2>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <form
+        onSubmit={onSubmit}
+        className="space-y-5"
+      >
+        {/* Name */}
         <div>
-          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Full Name
+          <label
+            htmlFor="name"
+            className="mb-1 block"
+          >
+            Name
           </label>
+
           <input
-            name="name"
-            value={formData.name}
-            onChange={onChange}
-            placeholder="John Doe"
-            required
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
+            id="name"
+            type="text"
+            {...register("name")}
+            className="w-full rounded border px-3 py-2"
           />
+
+          {errors.name && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.name.message}
+            </p>
+          )}
         </div>
 
+        {/* Email */}
         <div>
-          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Email Address
+          <label
+            htmlFor="email"
+            className="mb-1 block"
+          >
+            Email
           </label>
+
           <input
+            id="email"
             type="email"
-            name="email"
-            value={formData.email}
-            onChange={onChange}
-            placeholder="john@example.com"
-            required
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
+            {...register("email")}
+            className="w-full rounded border px-3 py-2"
           />
+
+          {errors.email && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.email.message}
+            </p>
+          )}
         </div>
 
+        {/* Department */}
         <div>
-          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label
+            htmlFor="department"
+            className="mb-1 block"
+          >
             Department
           </label>
-          <select
-            name="department"
-            value={formData.department}
-            onChange={onChange}
-            required
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
-          >
-            <option value="">Select Department</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Design">Design</option>
-            <option value="Human Resources">Human Resources</option>
-          </select>
-        </div>
 
-        <div>
-          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Role / Job Title
-          </label>
           <input
+            id="department"
             type="text"
-            name="role"
-            value={formData.role}
-            onChange={onChange}
-            placeholder="Software Engineer"
-            required
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
+            {...register("department")}
+            className="w-full rounded border px-3 py-2"
           />
+
+          {errors.department && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.department.message}
+            </p>
+          )}
         </div>
 
+        {/* Role */}
         <div>
-          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label
+            htmlFor="role"
+            className="mb-1 block"
+          >
+            Role
+          </label>
+
+          <input
+            id="role"
+            type="text"
+            {...register("role")}
+            className="w-full rounded border px-3 py-2"
+          />
+
+          {errors.role && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.role.message}
+            </p>
+          )}
+        </div>
+
+        {/* Joining Date */}
+        <div>
+          <label
+            htmlFor="joiningDate"
+            className="mb-1 block"
+          >
             Joining Date
           </label>
+
           <input
-            name="joiningDate"
+            id="joiningDate"
             type="date"
-            value={formData.joiningDate}
-            onChange={onChange}
-            required
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
+            {...register("joiningDate")}
+            className="w-full rounded border px-3 py-2"
           />
+
+          {errors.joiningDate && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.joiningDate.message}
+            </p>
+          )}
         </div>
 
+        {/* Status */}
         <div>
-          <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label
+            htmlFor="status"
+            className="mb-1 block"
+          >
             Status
           </label>
-          <select
-            name="status"
-            value={formData.status}
-            onChange={onChange}
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
-          >
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
-        </div>
-      </div>
 
-      <div className="pt-2 flex justify-end">
+          <select
+            id="status"
+            {...register("status")}
+            className="w-full rounded border px-3 py-2"
+          >
+            <option value="Active">
+              Active
+            </option>
+
+            <option value="Inactive">
+              Inactive
+            </option>
+          </select>
+
+          {errors.status && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.status.message}
+            </p>
+          )}
+        </div>
+
+        {/* Submit */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-lg bg-blue-600 px-6 py-2.5 font-medium text-white shadow-xs hover:bg-blue-700 disabled:opacity-50 transition-colors"
+          className="rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
         >
-          {isSubmitting ? submittingText : submitText}
+          {isSubmitting
+            ? submittingText
+            : submitText}
         </button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }
 

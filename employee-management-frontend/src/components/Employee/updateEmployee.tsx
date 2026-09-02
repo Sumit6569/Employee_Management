@@ -1,72 +1,60 @@
-import React, { useState } from "react";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import type {
-  Employee,
-  UpdateEmployeeInput,
-} from "../../Types/EmployeeTypes";
+import EmployeeForm from './EmloyeeForm';
 
-import EmployeeForm from "./EmloyeeForm";
+import { employeeSchema, type EmployeeFormData } from '../../Types/EmployeeSchema';
+
+import useEmployees from '../../hooks/useEmployees';
+
+import type { Employee } from '../../Types/EmployeeTypes';
+import { useState } from 'react';
 
 interface UpdateEmployeeProps {
   employee: Employee;
-
-  onSubmit: (
-    id: number,
-    employee: UpdateEmployeeInput
-  ) => Promise<void>;
-
-  isSubmitting: boolean;
+  setSelectedEmployee:()=>void;
+  
 }
 
-function UpdateEmployee({
-  employee,
-  onSubmit,
-  isSubmitting,
-}: UpdateEmployeeProps) {
-  const [formData, setFormData] =
-    useState<UpdateEmployeeInput>({
+function UpdateEmployee({ employee,setSelectedEmployee }: UpdateEmployeeProps) {
+  const { actions } = useEmployees();
+  const [showUpdateEmployeeForm, setShowUpdateEmployeeForm] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<EmployeeFormData>({
+    resolver: zodResolver(employeeSchema),
+
+    defaultValues: {
       name: employee.name,
-      department: employee.department,
       email: employee.email,
+      department: employee.department,
       role: employee.role,
       joiningDate: employee.joiningDate,
       status: employee.status,
-    });
+    },
+  });
 
-  function handleChange(
-    event: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement
-    >
-  ): void {
-    const { name, value } = event.target;
+  async function onSubmit(data: EmployeeFormData): Promise<void> {
+    await actions.updateEmployee(employee.id, data);
+    setSelectedEmployee(null);
+    
 
-    setFormData((previous) => ({
-      ...previous,
-      [name]: value,
-    }));
-  }
-
-  async function handleSubmit(
-    event: React.FormEvent<HTMLFormElement>
-  ): Promise<void> {
-    event.preventDefault();
-
-    await onSubmit(
-      employee.id,
-      formData
-    );
   }
 
   return (
-    <EmployeeForm
-      formData={formData}
-      onChange={handleChange}
-      onSubmit={handleSubmit}
-      isSubmitting={isSubmitting}
-      title="Edit Employee"
-      submitText="Save Changes"
-      submittingText="Saving..."
-    />
+    <>
+      <EmployeeForm
+        register={register}
+        errors={errors}
+        onSubmit={handleSubmit(onSubmit)}
+        isSubmitting={isSubmitting}
+        title="Edit Employee"
+        submitText="Save Changes"
+        submittingText="Saving..."
+      />
+    </>
   );
 }
 

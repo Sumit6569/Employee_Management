@@ -1,70 +1,65 @@
-import React, { useState } from "react";
-
-import type {
-  CreateEmployeeInput,
-  UpdateEmployeeInput,
-} from "../../Types/EmployeeTypes";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import EmployeeForm from "./EmloyeeForm";
 
-interface CreateEmployeeProps {
-  onSubmit: (
-    employee: CreateEmployeeInput
-  ) => Promise<void>;
+import {
+  employeeSchema,
+  type EmployeeFormData,
+} from "../../Types/EmployeeSchema";
 
-  isSubmitting: boolean;
+import type { CreateEmployeeInput } from "../../Types/EmployeeTypes";
+
+interface CreateEmployeeProps {
+  onSubmit?: (employee: CreateEmployeeInput) => Promise<void>;
+  isSubmitting?: boolean;
 }
 
 function CreateEmployee({
-  onSubmit,
-  isSubmitting,
-}: CreateEmployeeProps) {
-  const [formData, setFormData] =
-    useState<UpdateEmployeeInput>({
+  onSubmit: onSubmitProp,
+  isSubmitting: isSubmittingProp,
+}: CreateEmployeeProps = {}) {
+  const { actions } = useEmployees();
+
+  const {
+    register,
+    handleSubmit,
+    formState: {
+      errors,
+      isSubmitting: isFormSubmitting,
+    },
+    reset,
+  } = useForm<EmployeeFormData>({
+    resolver: zodResolver(employeeSchema),
+
+    defaultValues: {
       name: "",
-      department: "",
       email: "",
+      department: "",
       role: "",
       joiningDate: "",
       status: "Active",
-    });
+    },
+  });
 
-  function handleChange(
-    event: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement
-    >
-  ): void {
-    const { name, value } = event.target;
-
-    setFormData((previous) => ({
-      ...previous,
-      [name]: value,
-    }));
-  }
-
-  async function handleSubmit(
-    event: React.FormEvent<HTMLFormElement>
+  async function onSubmit(
+    data: EmployeeFormData
   ): Promise<void> {
-    event.preventDefault();
+    if (onSubmitProp) {
+      await onSubmitProp(data);
+    } else {
+      await actions.createEmployee(data);
+    }
 
-    await onSubmit(formData);
-
-    setFormData({
-      name: "",
-      department: "",
-      email: "",
-      role: "",
-      joiningDate: "",
-      status: "Active",
-    });
+    reset();
   }
 
   return (
     <EmployeeForm
-      formData={formData}
-      onChange={handleChange}
-      onSubmit={handleSubmit}
-      isSubmitting={isSubmitting}
+      register={register}
+      errors={errors}
+      onSubmit={handleSubmit(onSubmit)}
+      isSubmitting={isSubmittingProp ?? isFormSubmitting}
       title="Create Employee"
       submitText="Create Employee"
       submittingText="Creating..."
