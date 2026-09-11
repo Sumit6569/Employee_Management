@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-
+import { useQueryClient } from '@tanstack/react-query';
 import type { CreateEmployeeInput, Employee } from '../../Types/EmployeeTypes';
 
 import {
@@ -29,12 +29,6 @@ interface UseEmployeesReturn {
   state: EmployeeState;
   actions: UseEmployeesActions;
 }
-
-interface UseEmployeesReturn {
-  state: EmployeeState;
-  actions: UseEmployeesActions;
-}
-
 function useEmployees(): UseEmployeesReturn {
   const [state, setState] = useState<EmployeeState>({
     employees: [],
@@ -43,7 +37,7 @@ function useEmployees(): UseEmployeesReturn {
     isCreating: false,
     isUpdating: false,
   });
-
+  const queryClient = useQueryClient();
   const showNotification = useNotificationStore((store) => store.showNotification);
 
   async function fetchEmployees(): Promise<void> {
@@ -83,6 +77,13 @@ function useEmployees(): UseEmployeesReturn {
 
       await createEmployeeApi(employee);
       showNotification('Employee created successfully', 'success');
+      await queryClient.invalidateQueries({
+        queryKey: ['employees'],
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: ['reports'],
+      });
       await fetchEmployees();
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Failed to create employee';

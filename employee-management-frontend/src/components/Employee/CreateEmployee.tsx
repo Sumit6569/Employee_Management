@@ -1,14 +1,12 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import EmployeeForm from "./EmloyeeForm";
+import EmployeeForm from './EmloyeeForm';
 
-import {
-  employeeSchema,
-  type EmployeeFormData,
-} from "../../Types/EmployeeSchema";
+import { employeeSchema, type EmployeeFormData } from '../../Types/EmployeeSchema';
 
-import type { CreateEmployeeInput } from "../../Types/EmployeeTypes";
+import type { CreateEmployeeInput } from '../../Types/EmployeeTypes';
+import useEmployees from '../../hooks/Employee/useEmployees';
 
 interface CreateEmployeeProps {
   onSubmit?: (employee: CreateEmployeeInput) => Promise<void>;
@@ -24,27 +22,22 @@ function CreateEmployee({
   const {
     register,
     handleSubmit,
-    formState: {
-      errors,
-      isSubmitting: isFormSubmitting,
-    },
+    formState: { errors, isSubmitting: isFormSubmitting },
     reset,
   } = useForm<EmployeeFormData>({
     resolver: zodResolver(employeeSchema),
 
     defaultValues: {
-      name: "",
-      email: "",
-      department: "",
-      role: "",
-      joiningDate: "",
-      status: "Active",
+      name: '',
+      email: '',
+      department: '',
+      role: '',
+      joiningDate: '',
+      status: 'Active',
     },
   });
 
-  async function onSubmit(
-    data: EmployeeFormData
-  ): Promise<void> {
+  async function onSubmit(data: EmployeeFormData): Promise<void> {
     if (onSubmitProp) {
       await onSubmitProp(data);
     } else {
