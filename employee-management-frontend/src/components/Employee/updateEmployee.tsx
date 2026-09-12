@@ -7,7 +7,7 @@ import { employeeSchema, type EmployeeFormData } from '../../Types/EmployeeSchem
 
 import useEmployees from '../../hooks/Employee/useEmployees';
 
-import type { UpdateEmployeeInput } from '../../Types/EmployeeTypes';
+import type { Employee, UpdateEmployeeInput } from '../../Types/EmployeeTypes';
 
 interface UpdateEmployeeProps {
   employee: Employee;

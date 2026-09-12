@@ -9,8 +9,13 @@ import { store } from './stores/store';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import keycloak from './config/keycloak';
+import { registerSW } from 'virtual:pwa-register';
 
 import './index.css';
+
+registerSW({
+  immediate: true,
+});
 
 const queryClient = new QueryClient();
 

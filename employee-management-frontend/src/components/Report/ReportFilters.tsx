@@ -10,7 +10,10 @@ import { selectReportFilters } from '../../stores/selectors/reportSelectors';
 
 import { useAppDispatch, useAppSelector } from '../../stores/hook';
 import { useEmployeesQuery } from '../../hooks/Employee/useEmployeesQuery';
+import { useReportSessionStorage } from '../../hooks/Reports/useReportSessionStorage';
+
 function ReportFilters() {
+  useReportSessionStorage();
   const { data: employees = [], isLoading: isEmployeesLoading } = useEmployeesQuery();
   const dispatch = useAppDispatch();
 
@@ -112,15 +115,15 @@ function ReportFilters() {
             <option value="">All Employees</option>
 
             {/* We'll populate real employees here later */}
-             {isEmployeesLoading ? (
-      <option disabled>Loading employees...</option>
-    ) : (
-      employees.map((employee) => (
-        <option key={employee.id} value={employee.id}>
-          {employee.name}
-        </option>
-      ))
-    )}
+            {isEmployeesLoading ? (
+              <option disabled>Loading employees...</option>
+            ) : (
+              employees.map((employee) => (
+                <option key={employee.id} value={employee.id}>
+                  {employee.name}
+                </option>
+              ))
+            )}
           </select>
         </div>
       </div>

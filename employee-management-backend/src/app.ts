@@ -5,6 +5,7 @@ import { checkDatabaseConnection } from './config/database.js';
 import employeeRoutes from './routes/employeeRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import sseRoutes from './routes/sseRoutes.js';
 import { notFound } from './middleware/notFound.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
@@ -55,6 +56,7 @@ app.get('/health', async (_req, res) => {
 
 // Mount domain routes
 app.use('/auth', authRoutes);
+app.use('/events', sseRoutes);
 app.use('/employees', employeeRoutes);
 app.use('/reports', reportRoutes);
 

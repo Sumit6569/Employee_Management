@@ -20,7 +20,6 @@ function Employees() {
 
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [showCreateEmployeeForm, setShowCreateEmployeeForm] = useState(false);
-  const [showUpdateEmployeeForm, setShowUpdateEmployeeForm] = useState(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 

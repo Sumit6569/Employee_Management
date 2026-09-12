@@ -1,12 +1,11 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
 import {
   employeeQuerySchema,
   employeeIdSchema,
   createEmployeeSchema,
   updateEmployeeSchema,
-} from "../validators/employeeValidator.js";
-
+} from '../validators/employeeValidator.js';
 
 import {
   getEmployees,
@@ -14,15 +13,11 @@ import {
   createEmployee,
   updateEmployee,
   deleteEmployee,
-} from "../services/employeeService.js";
-
+} from '../services/employeeService.js';
+import { sseService } from '../services/sseService.js';
 
 // GET /employees
-export const getAllEmployees = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getAllEmployees = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const query = employeeQuerySchema.parse(req.query);
 
@@ -38,13 +33,8 @@ export const getAllEmployees = async (
   }
 };
 
-
 // GET /employees/:id
-export const getOneEmployee = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getOneEmployee = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = employeeIdSchema.parse(req.params);
 
@@ -59,17 +49,18 @@ export const getOneEmployee = async (
   }
 };
 
-
 // POST /employees
-export const addEmployee = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const addEmployee = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = createEmployeeSchema.parse(req.body);
 
     const employee = await createEmployee(data);
+
+    sseService.broadcast({
+      type: 'employee-created',
+      message: `Employee ${employee.name} created successfully`,
+      data: employee,
+    });
 
     res.status(201).json({
       success: true,
@@ -80,19 +71,20 @@ export const addEmployee = async (
   }
 };
 
-
 // PUT /employees/:id
-export const editEmployee = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const editEmployee = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = employeeIdSchema.parse(req.params);
 
     const data = updateEmployeeSchema.parse(req.body);
 
     const employee = await updateEmployee(id, data);
+
+    sseService.broadcast({
+      type: 'employee-updated',
+      message: `Employee ${employee.name} updated successfully`,
+      data: employee,
+    });
 
     res.status(200).json({
       success: true,
@@ -103,13 +95,8 @@ export const editEmployee = async (
   }
 };
 
-
 // DELETE /employees/:id
-export const removeEmployee = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const removeEmployee = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = employeeIdSchema.parse(req.params);
 
@@ -118,7 +105,7 @@ export const removeEmployee = async (
     res.status(200).json({
       success: true,
       data: {
-        message: "Employee deleted successfully",
+        message: 'Employee deleted successfully',
       },
     });
   } catch (error) {

@@ -2,10 +2,14 @@ import { Outlet } from "react-router-dom";
 
 import Header from "../components/Header/Header";
 import Sidebar from "../components/Sidebar/Sidebar";
+import { useSSENotifications } from "../hooks/sse/useSSENotifications";
+import { OfflineBanner } from "../components/OfflineBanner/OfflineBanner";
 
 function AppLayout() {
+  useSSENotifications();
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+      <OfflineBanner />
       <Header />
 
       <div className="flex min-h-[calc(100vh-4rem)]">

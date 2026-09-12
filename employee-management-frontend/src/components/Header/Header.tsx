@@ -24,9 +24,11 @@ function Header() {
       </button>
       <div className="flex items-center gap-2">
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
-          A
+          {auth.username?.[0]?.toUpperCase() || 'U'}
         </div>
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Admin</span>
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+          {auth.username || 'User'}
+        </span>
       </div>
     </header>
   );
