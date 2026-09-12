@@ -1,6 +1,7 @@
 import ThemeToggle from '../TheameToggle/ThemeToggle';
-
+import { useAuth } from '../../context/AuthContext';
 function Header() {
+  const { auth, logout } = useAuth();
   return (
     <header
       className="
@@ -18,7 +19,9 @@ function Header() {
       <h1 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
         Employee Management System
       </h1>
-
+      <button type="button" onClick={logout}>
+        Logout
+      </button>
       <div className="flex items-center gap-2">
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
           A
