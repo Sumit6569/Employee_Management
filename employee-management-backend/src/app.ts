@@ -1,16 +1,17 @@
-import express from "express";
-import cors from "cors";
-import { FRONTEND_URL } from "./config/env.js";
-import { checkDatabaseConnection } from "./config/database.js";
-import employeeRoutes from "./routes/employeeRoutes.js";
-import reportRoutes from "./routes/reportRoutes.js";
-import { notFound } from "./middleware/notFound.js";
-import { errorHandler } from "./middleware/errorHandler.js";
+import express from 'express';
+import cors from 'cors';
+import { FRONTEND_URL } from './config/env.js';
+import { checkDatabaseConnection } from './config/database.js';
+import employeeRoutes from './routes/employeeRoutes.js';
+import reportRoutes from './routes/reportRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import { notFound } from './middleware/notFound.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
 
 // Configure CORS
-const allowedOrigins = [FRONTEND_URL, "http://localhost:5173", "http://localhost:3000"];
+const allowedOrigins = [FRONTEND_URL, 'http://localhost:5173', 'http://localhost:3000'];
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -31,30 +32,31 @@ app.use(express.json());
  * GET /health
  * Health check endpoint verifying backend & database status.
  */
-app.get("/health", async (_req, res) => {
+app.get('/health', async (_req, res) => {
   const isDbHealthy = await checkDatabaseConnection();
 
   if (isDbHealthy) {
     res.status(200).json({
       success: true,
       data: {
-        status: "ok",
-        database: "connected",
+        status: 'ok',
+        database: 'connected',
       },
     });
   } else {
     res.status(503).json({
       success: false,
       error: {
-        message: "Database connection failed",
+        message: 'Database connection failed',
       },
     });
   }
 });
 
 // Mount domain routes
-app.use("/employees", employeeRoutes);
-app.use("/reports", reportRoutes);
+app.use('/auth', authRoutes);
+app.use('/employees', employeeRoutes);
+app.use('/reports', reportRoutes);
 
 // Handle unknown routes & errors
 app.use(notFound);
