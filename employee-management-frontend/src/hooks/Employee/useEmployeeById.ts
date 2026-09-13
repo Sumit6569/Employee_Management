@@ -15,10 +15,14 @@ const INITIAL_STATE: EmployeeDetailState = {
 };
 
 function useEmployeeById(id: number) {
+  const [employee, setEmployee] = useState<Employee | null>(null);
+  const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [state, setState] = useState<EmployeeDetailState>(INITIAL_STATE);
 
   useEffect(() => {
     if (!id || isNaN(id)) {
+      setLoading(false);
       setState({
         employee: null,
         isLoading: false,
@@ -37,7 +41,10 @@ function useEmployeeById(id: number) {
       });
 
       try {
+        setLoading(true);
+        setError(null);
         const data = await getEmployeeById(id);
+        setEmployee(data);
         if (isMounted) {
           setState({
             employee: data,
@@ -46,6 +53,9 @@ function useEmployeeById(id: number) {
           });
         }
       } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Something went wrong');
+      } finally {
+        setLoading(false);
         if (isMounted) {
           setState({
             employee: null,
@@ -64,6 +74,9 @@ function useEmployeeById(id: number) {
   }, [id]);
 
   return {
+    employee,
+    error,
+    isLoading,
     state,
     employee: state.employee,
     error: state.error,

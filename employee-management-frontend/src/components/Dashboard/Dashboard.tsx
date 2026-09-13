@@ -20,6 +20,11 @@ function Dashboard() {
     .slice(0, 5);
 
   return (
+    <section>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          Dashboard
+        </h2>
     <section className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -33,6 +38,9 @@ function Dashboard() {
           </p>
         </div>
 
+        <p className="mt-1 text-gray-500 dark:text-gray-400">
+          Overview of your employee operations.
+        </p>
         {canManage && (
           <div className="flex items-center gap-3">
             <Link
@@ -51,6 +59,7 @@ function Dashboard() {
         )}
       </div>
 
+      <div className="grid gap-5 md:grid-cols-3">
       {error && (
         <div className="rounded-lg bg-red-50 dark:bg-red-950/50 p-4 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm">
           Failed to load dashboard data: {error}
@@ -60,6 +69,10 @@ function Dashboard() {
       {/* KPI Cards */}
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-5 shadow-xs transition-colors">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            Total Employees
+          </p>
+
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Employees</p>
             <div className="rounded-lg bg-blue-50 dark:bg-blue-950/50 p-2 text-blue-600 dark:text-blue-400">
@@ -79,11 +92,16 @@ function Dashboard() {
             </div>
           </div>
           <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
+            5
             {isLoading ? '...' : totalEmployees}
           </p>
         </div>
 
         <div className="rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-5 shadow-xs transition-colors">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            Active Employees
+          </p>
+
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Active Employees</p>
             <div className="rounded-lg bg-green-50 dark:bg-green-950/50 p-2 text-green-600 dark:text-green-400">
@@ -103,11 +121,14 @@ function Dashboard() {
             </div>
           </div>
           <p className="mt-2 text-3xl font-bold text-green-600 dark:text-green-400">
+            4
             {isLoading ? '...' : activeEmployees}
           </p>
         </div>
 
         <div className="rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-5 shadow-xs transition-colors">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            Departments
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
               Inactive Employees
@@ -153,6 +174,7 @@ function Dashboard() {
             </div>
           </div>
           <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
+            3
             {isLoading ? '...' : totalDepartments}
           </p>
         </div>

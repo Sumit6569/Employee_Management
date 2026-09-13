@@ -8,8 +8,18 @@ function Header() {
   const primaryRole = auth.roles.find((r) => ['admin', 'manager', 'employee'].includes(r)) || 'user';
 
   return (
+    <header
+      className="
+        flex h-16 items-center justify-between
+        border-b border-gray-200 px-6
+        bg-white text-gray-900
+        dark:bg-gray-800 dark:border-gray-700 dark:text-white
+        transition-colors duration-200 shadow-xs
+      "
+    >
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xs px-6 text-gray-900 dark:text-white shadow-xs transition-colors duration-200">
       <div className="flex items-center gap-3">
+        <ThemeToggle />
         <h1 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white hidden sm:block">
           Employee Management System
         </h1>
@@ -18,6 +28,15 @@ function Header() {
         </h1>
       </div>
 
+      <h1 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+        Employee Management System
+      </h1>
+      <button type="button" onClick={logout}>
+        Logout
+      </button>
+      <div className="flex items-center gap-2">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white">
+          {auth.username?.[0]?.toUpperCase() || 'U'}
       <div className="flex items-center gap-3 sm:gap-4">
         <ThemeToggle />
 
@@ -38,6 +57,9 @@ function Header() {
             </span>
           </div>
         </div>
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+          {auth.username || 'User'}
+        </span>
 
         <div className="h-5 w-px bg-gray-200 dark:bg-gray-700" />
 
