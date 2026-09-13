@@ -2,11 +2,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import EmployeeForm from './EmloyeeForm';
-
 import { employeeSchema, type EmployeeFormData } from '../../Types/EmployeeSchema';
-
 import useEmployees from '../../hooks/Employee/useEmployees';
-
 import type { Employee, UpdateEmployeeInput } from '../../Types/EmployeeTypes';
 
 interface UpdateEmployeeProps {
@@ -19,6 +16,7 @@ interface UpdateEmployeeProps {
 function UpdateEmployee({
   employee,
   onSubmit: onSubmitProp,
+  onCancel,
   isSubmitting: isSubmittingProp,
 }: UpdateEmployeeProps) {
   const { actions } = useEmployees();
@@ -29,7 +27,6 @@ function UpdateEmployee({
     formState: { errors, isSubmitting: isFormSubmitting },
   } = useForm<EmployeeFormData>({
     resolver: zodResolver(employeeSchema),
-
     defaultValues: {
       name: employee.name,
       email: employee.email,
@@ -54,9 +51,10 @@ function UpdateEmployee({
       errors={errors}
       onSubmit={handleSubmit(onSubmit)}
       isSubmitting={isSubmittingProp ?? isFormSubmitting}
-      title="Edit Employee"
+      title={`Edit Employee: ${employee.name}`}
       submitText="Save Changes"
       submittingText="Saving..."
+      onCancel={onCancel}
     />
   );
 }

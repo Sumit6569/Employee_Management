@@ -4,10 +4,12 @@ import AppLayout from './Layout/AppLayOut';
 import Dashboard from './components/Dashboard/Dashboard';
 import Employees from './components/Employee/Employee';
 import EmployeeDetails from './components/Employee/EmployeeDetails';
+import Reports from './pages/Reports/Reports';
 import NotFound from './components/NotFound/NotFound';
 import Notification from './components/Notification/Notification';
 import ProtectedRoute from './routes/ProtectedRoute';
 import Unauthorized from './components/Unauthorized/Unauthorized';
+
 function App() {
   return (
     <>
@@ -26,11 +28,11 @@ function App() {
           <Route element={<AppLayout />}>
             <Route path="/employees" element={<Employees />} />
             <Route path="/employees/:id" element={<EmployeeDetails />} />
+            <Route path="/reports" element={<Reports />} />
           </Route>
         </Route>
 
         {/* Catch-all */}
-
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
