@@ -33,7 +33,6 @@ function ReportFilters() {
 
   function handleEmployeeChange(event: React.ChangeEvent<HTMLSelectElement>): void {
     const value = event.target.value;
-
     dispatch(setEmployee(value ? Number(value) : null));
   }
 
@@ -42,8 +41,6 @@ function ReportFilters() {
   }
 
   return (
-    <div className="rounded-lg border bg-white p-6">
-      <h2 className="mb-4 text-lg font-semibold">Report Filters</h2>
     <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-xs transition-colors">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-bold text-gray-900 dark:text-white">Report Filters</h2>
@@ -59,81 +56,63 @@ function ReportFilters() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {/* Start Date */}
         <div>
-          <label htmlFor="startDate" className="mb-1 block text-sm font-medium">
           <label htmlFor="startDate" className="mb-1.5 block text-xs font-medium text-gray-700 dark:text-gray-300">
             Start Date
           </label>
-
           <input
             id="startDate"
             type="date"
             value={filters.dateRange.startDate}
             onChange={handleStartDateChange}
-            className="w-full rounded border px-3 py-2"
             className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
           />
         </div>
 
         {/* End Date */}
         <div>
-          <label htmlFor="endDate" className="mb-1 block text-sm font-medium">
           <label htmlFor="endDate" className="mb-1.5 block text-xs font-medium text-gray-700 dark:text-gray-300">
             End Date
           </label>
-
           <input
             id="endDate"
             type="date"
             value={filters.dateRange.endDate}
             onChange={handleEndDateChange}
-            className="w-full rounded border px-3 py-2"
             className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
           />
         </div>
 
         {/* Department */}
         <div>
-          <label htmlFor="department" className="mb-1 block text-sm font-medium">
           <label htmlFor="department" className="mb-1.5 block text-xs font-medium text-gray-700 dark:text-gray-300">
             Department
           </label>
-
           <select
             id="department"
             value={filters.department}
             onChange={handleDepartmentChange}
-            className="w-full rounded border px-3 py-2"
             className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
           >
             <option value="">All Departments</option>
-
             <option value="Engineering">Engineering</option>
-
             <option value="Design">Design</option>
-
             <option value="HR">HR</option>
-
             <option value="Finance">Finance</option>
           </select>
         </div>
 
         {/* Employee */}
         <div>
-          <label htmlFor="employee" className="mb-1 block text-sm font-medium">
           <label htmlFor="employee" className="mb-1.5 block text-xs font-medium text-gray-700 dark:text-gray-300">
             Employee
           </label>
-
           <select
             id="employee"
             value={filters.employeeId ?? ''}
             onChange={handleEmployeeChange}
-            className="w-full rounded border px-3 py-2"
             className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
           >
             <option value="">All Employees</option>
-
-            {/* We'll populate real employees here later */}
             {isEmployeesLoading ? (
               <option disabled>Loading employees...</option>
             ) : (
@@ -146,10 +125,6 @@ function ReportFilters() {
           </select>
         </div>
       </div>
-
-      <button type="button" onClick={handleReset} className="mt-4 rounded border px-4 py-2">
-        Reset Filters
-      </button>
     </div>
   );
 }

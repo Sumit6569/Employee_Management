@@ -5,14 +5,16 @@ interface ReportExportProps {
 }
 
 function ReportExport({ reports }: ReportExportProps) {
+  const safeReports = Array.isArray(reports) ? reports : [];
+
   function handleExport(): void {
-    if (reports.length === 0) {
+    if (safeReports.length === 0) {
       return;
     }
 
     const headers = ['Employee', 'Department', 'Role', 'Email', 'Joining Date', 'Status'];
 
-    const rows = reports.map((report) => [
+    const rows = safeReports.map((report) => [
       report.name,
       report.department,
       report.role,
@@ -47,8 +49,7 @@ function ReportExport({ reports }: ReportExportProps) {
       <button
         type="button"
         onClick={handleExport}
-        disabled={reports.length === 0}
-        className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
+        disabled={safeReports.length === 0}
         className="inline-flex items-center gap-2 rounded-lg bg-gray-900 dark:bg-gray-100 px-4 py-2 text-sm font-medium text-white dark:text-gray-900 shadow-xs hover:bg-gray-800 dark:hover:bg-white disabled:cursor-not-allowed disabled:opacity-50 transition-colors"
       >
         <svg

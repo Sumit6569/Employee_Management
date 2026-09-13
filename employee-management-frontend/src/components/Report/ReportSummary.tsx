@@ -1,22 +1,25 @@
-import type { ReportResult } from "../../services/reportService";
-import SummaryCard from "./SummaryCard";
+import type { ReportResult } from '../../services/reportService';
+import SummaryCard from './SummaryCard';
+
 interface ReportSummaryProps {
   reports: ReportResult[];
 }
 
 function ReportSummary({ reports }: ReportSummaryProps) {
-  const totalEmployees = reports.length;
+  const safeReports = Array.isArray(reports) ? reports : [];
 
-  const activeEmployees = reports.filter(
-    (report) => report.status === "Active"
+  const totalEmployees = safeReports.length;
+
+  const activeEmployees = safeReports.filter(
+    (report) => report.status === 'Active'
   ).length;
 
-  const inactiveEmployees = reports.filter(
-    (report) => report.status === "Inactive"
+  const inactiveEmployees = safeReports.filter(
+    (report) => report.status === 'Inactive'
   ).length;
 
   const departments = new Set(
-    reports.map((report) => report.department)
+    safeReports.map((report) => report.department)
   ).size;
 
   return (

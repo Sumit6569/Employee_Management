@@ -33,7 +33,6 @@ function App() {
         </Route>
 
         {/* Catch-all */}
-
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

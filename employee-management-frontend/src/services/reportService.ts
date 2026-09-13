@@ -1,4 +1,5 @@
-import httpClient from './httpClient';
+import { get } from './httpClient';
+import { reportCacheService } from './reportCacheService';
 
 export interface ReportFilters {
   startDate?: string;
@@ -36,7 +37,34 @@ export async function getReports(filters: ReportFilters): Promise<ReportResult[]
     params.set('employeeId', String(filters.employeeId));
   }
 
-  const response = await httpClient.get<ReportResult[]>(`/reports?${params.toString()}`);
+  const queryString = params.toString();
+  const url = queryString ? `/reports?${queryString}` : '/reports';
+  const cacheKey = queryString || 'default';
 
-  return response.data;
+  try {
+    const data = await get<ReportResult[] | { data: ReportResult[] }>(url);
+    const records: ReportResult[] = Array.isArray(data)
+      ? data
+      : (data && typeof data === 'object' && 'data' in data && Array.isArray((data as { data: ReportResult[] }).data))
+        ? (data as { data: ReportResult[] }).data
+        : [];
+
+    try {
+      await reportCacheService.setReport(cacheKey, filters, records);
+    } catch {
+      // ignore cache writing error
+    }
+
+    return records;
+  } catch (err: unknown) {
+    try {
+      const cached = await reportCacheService.getReport(cacheKey);
+      if (cached && Array.isArray(cached.records)) {
+        return cached.records;
+      }
+    } catch {
+      // ignore
+    }
+    throw err;
+  }
 }

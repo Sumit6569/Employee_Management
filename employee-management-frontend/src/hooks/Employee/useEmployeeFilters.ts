@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import type { Employee } from '../../Types/EmployeeTypes';
-import { useState } from 'react';
 
 export interface EmployeeFilterState {
   search: string;
@@ -15,9 +14,6 @@ const INITIAL_FILTERS: EmployeeFilterState = {
 };
 
 function useEmployeeFilters(employees: Employee[]) {
-  const [search, setSearch] = useState('');
-  const [department, setDepartment] = useState('All');
-  const [status, setStatus] = useState('All');
   const [filters, setFilters] = useState<EmployeeFilterState>(INITIAL_FILTERS);
 
   const setSearch = (search: string) => {
@@ -37,16 +33,13 @@ function useEmployeeFilters(employees: Employee[]) {
   };
 
   const filterdEmployee = employees.filter((employee) => {
-    const matchesSearch = employee.name.toLowerCase().includes(search.toLowerCase());
     const matchesSearch = employee.name
       .toLowerCase()
       .includes(filters.search.toLowerCase());
 
-    const matchesDepartment = department === 'All' || employee.department === department;
     const matchesDepartment =
       filters.department === 'All' || employee.department === filters.department;
 
-    const matchStatus = status === 'All' || status === employee.status;
     const matchStatus =
       filters.status === 'All' || employee.status === filters.status;
 
@@ -55,15 +48,12 @@ function useEmployeeFilters(employees: Employee[]) {
 
   return {
     filterdEmployee,
-    search,
     filters,
     setFilters,
     search: filters.search,
     setSearch,
-    department,
     department: filters.department,
     setDepartment,
-    status,
     status: filters.status,
     setStatus,
     resetFilters,

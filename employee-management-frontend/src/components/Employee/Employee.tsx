@@ -25,8 +25,6 @@ function Employees() {
     actions: { createEmployee, updateEmployee, deleteEmployee },
   } = useEmployees();
 
-  const { filterdEmployee, search, setSearch, department, setDepartment, status, setStatus } =
-    useEmployeeFilters(employees);
   const {
     filterdEmployee,
     search,
@@ -38,16 +36,11 @@ function Employees() {
     resetFilters,
   } = useEmployeeFilters(employees);
 
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
-  const [showCreateEmployeeForm, setShowCreateEmployeeForm] = useState(false);
   // Clubbed modal/form state
   const [modalState, setModalState] = useState<EmployeeModalState>(INITIAL_MODAL_STATE);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  function handleEdit(employee: Employee): void {
-    setSelectedEmployee(employee);
-  }
   const handleToggleCreate = (): void => {
     setModalState((prev) => ({
       selectedEmployee: null,
@@ -55,7 +48,6 @@ function Employees() {
     }));
   };
 
-  async function handleUpdate(id: number, employee: UpdateEmployeeInput): Promise<void> {
   const handleEdit = (employee: Employee): void => {
     setModalState({
       isCreating: false,
@@ -72,8 +64,6 @@ function Employees() {
 
   const handleUpdate = async (id: number, employee: UpdateEmployeeInput): Promise<void> => {
     await updateEmployee(id, employee);
-    setSelectedEmployee(null);
-  }
     setModalState((prev) => ({
       ...prev,
       selectedEmployee: null,
@@ -91,7 +81,6 @@ function Employees() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-12">
-        <p className="text-lg font-medium text-gray-600 dark:text-gray-400">Loading Employees...</p>
         <div className="flex flex-col items-center gap-3">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
           <p className="text-base font-medium text-gray-600 dark:text-gray-400">Loading Employees...</p>
@@ -101,15 +90,11 @@ function Employees() {
   }
 
   return (
-    <section>
-      <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
     <section className="space-y-6">
       {/* Header Bar */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Employees</h2>
-          <p className="mt-1 text-gray-500 dark:text-gray-400">
-            Manage your employee list and operations.
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Manage your employee directory, update profiles, and perform operations.
           </p>
@@ -117,8 +102,6 @@ function Employees() {
 
         <button
           type="button"
-          onClick={() => setShowCreateEmployeeForm(!showCreateEmployeeForm)}
-          className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-xs hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors dark:focus:ring-offset-gray-900"
           onClick={handleToggleCreate}
           className={`inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium transition-colors shadow-xs ${
             modalState.isCreating
@@ -126,13 +109,11 @@ function Employees() {
               : 'bg-blue-600 hover:bg-blue-700 text-white'
           }`}
         >
-          {showCreateEmployeeForm ? 'Close Form' : '+ Create Employee'}
           {modalState.isCreating ? '✕ Close Form' : '+ Create Employee'}
         </button>
       </div>
 
       {error && (
-        <div className="mb-6 rounded-lg bg-red-50 dark:bg-red-950/50 p-4 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300">
         <div className="rounded-lg bg-red-50 dark:bg-red-950/50 p-4 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm">
           {error}
         </div>
@@ -157,7 +138,6 @@ function Employees() {
       )}
 
       {/* Controls Bar */}
-      <div className="mb-6 grid gap-4 sm:grid-cols-12">
       <div className="grid gap-3 sm:grid-cols-12 rounded-xl bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-700 shadow-xs">
         <div className="sm:col-span-6">
           <input
@@ -166,7 +146,6 @@ function Employees() {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search employee by name, email or role..."
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
             className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3.5 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
           />
         </div>
@@ -175,7 +154,6 @@ function Employees() {
           <select
             value={department}
             onChange={(event) => setDepartment(event.target.value)}
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
             className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3.5 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
           >
             <option value="All">All Departments</option>
@@ -185,12 +163,10 @@ function Employees() {
           </select>
         </div>
 
-        <div className="sm:col-span-3">
         <div className="sm:col-span-3 flex gap-2">
           <select
             value={status}
             onChange={(event) => setStatus(event.target.value)}
-            className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
             className="w-full rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 px-3.5 py-2 text-sm text-gray-900 dark:text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
           >
             <option value="All">All Statuses</option>
@@ -211,9 +187,6 @@ function Employees() {
         </div>
       </div>
 
-      {showCreateEmployeeForm && (
-        <div className="mb-6">
-          <CreateEmployee onSubmit={createEmployee} isSubmitting={isCreating} />
       {/* Employee List */}
       {filterdEmployee.length === 0 ? (
         <div className="rounded-xl border border-dashed border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 p-12 text-center">
@@ -237,18 +210,6 @@ function Employees() {
           onDelete={deleteEmployee}
         />
       )}
-
-      {selectedEmployee && (
-        <div className="mb-6">
-          <UpdateEmployee
-            employee={selectedEmployee}
-            onSubmit={handleUpdate}
-            isSubmitting={isUpdating}
-          />
-        </div>
-      )}
-
-      <EmployeeList employees={filterdEmployee} onEdit={handleEdit} onDelete={deleteEmployee} />
     </section>
   );
 }
