@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
-import httpClient from '../../services/httpClient';
-import useNotificationStore from '../../stores/notificationStore';
-import { useAuth } from '../../context/AuthContext';
-import type { SSEEvent } from '../../types/sse';
+import httpClient from '../../services/httpClient.ts';
+import useNotificationStore from '../../stores/notificationStore.ts';
+import { useAuth } from '../../context/AuthContext.tsx';
+import type { SSEEvent } from '../../types/sse.ts';
 
 /**
  * Custom React hook establishing a resilient Server-Sent Events (SSE) connection
@@ -133,3 +133,4 @@ export function useSSENotifications(): void {
     };
   }, [auth.isAuthenticated, showNotification]);
 }
+

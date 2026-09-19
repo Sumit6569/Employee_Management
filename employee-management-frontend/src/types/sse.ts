@@ -12,3 +12,4 @@ export interface SSEEvent<T = unknown> {
   data?: T;
   timestamp: string;
 }
+
