@@ -15,9 +15,6 @@ function Sidebar() {
   return (
     <aside className="w-64 shrink-0 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-5 transition-colors duration-200">
       <div className="mb-6 flex items-center gap-2">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white font-bold text-sm shadow-xs">
-          EP
-        </div>
         <div>
           <h2 className="text-base font-bold text-gray-900 dark:text-white leading-tight">
             Employee Portal

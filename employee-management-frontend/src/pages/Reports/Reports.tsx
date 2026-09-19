@@ -11,7 +11,10 @@ function Reports() {
   // Safely extract reports array whether data is an array or an ApiResponse object
   const reports: ReportResult[] = Array.isArray(data)
     ? data
-    : (data && typeof data === 'object' && 'data' in data && Array.isArray((data as { data: ReportResult[] }).data))
+    : data &&
+        typeof data === 'object' &&
+        'data' in data &&
+        Array.isArray((data as { data: ReportResult[] }).data)
       ? (data as { data: ReportResult[] }).data
       : [];
 
@@ -25,9 +28,7 @@ function Reports() {
           </p>
         </div>
 
-        {!isLoading && !isError && reports.length > 0 && (
-          <ReportExport reports={reports} />
-        )}
+        {!isLoading && !isError && reports.length > 0 && <ReportExport reports={reports} />}
       </div>
 
       <ReportFilters />
@@ -36,7 +37,9 @@ function Reports() {
         <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-12 text-center shadow-xs">
           <div className="flex flex-col items-center gap-3">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
-            <p className="text-base font-medium text-gray-600 dark:text-gray-400">Loading reports...</p>
+            <p className="text-base font-medium text-gray-600 dark:text-gray-400">
+              Loading reports...
+            </p>
           </div>
         </div>
       )}
