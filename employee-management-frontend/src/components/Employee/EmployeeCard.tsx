@@ -1,5 +1,6 @@
-import type { Employee } from "../../Types/EmployeeTypes";
-import { Link } from "react-router-dom";
+import { memo } from 'react';
+import type { Employee } from '../../Types/EmployeeTypes';
+import { Link } from 'react-router-dom';
 
 interface EmployeeCardProps {
   employee: Employee;
@@ -7,7 +8,8 @@ interface EmployeeCardProps {
   onDelete: () => void;
 }
 
-function EmployeeCard({
+// Performance Optimization: React.memo prevents re-rendering un-modified employee cards
+const EmployeeCard = memo(function EmployeeCard({
   employee,
   onEdit,
   onDelete,
@@ -26,17 +28,17 @@ function EmployeeCard({
 
       <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
         <p>
-          <span className="font-medium text-gray-900 dark:text-gray-200">Department:</span>{" "}
+          <span className="font-medium text-gray-900 dark:text-gray-200">Department:</span>{' '}
           {employee.department}
         </p>
 
         <p>
-          <span className="font-medium text-gray-900 dark:text-gray-200">Role:</span>{" "}
+          <span className="font-medium text-gray-900 dark:text-gray-200">Role:</span>{' '}
           {employee.role}
         </p>
 
         <p>
-          <span className="font-medium text-gray-900 dark:text-gray-200">Joining Date:</span>{" "}
+          <span className="font-medium text-gray-900 dark:text-gray-200">Joining Date:</span>{' '}
           {employee.joiningDate}
         </p>
       </div>
@@ -44,9 +46,9 @@ function EmployeeCard({
       <div className="mt-5 flex flex-wrap items-center gap-2 pt-2 border-t border-gray-100 dark:border-gray-700/60">
         <span
           className={
-            employee.status === "Active"
-              ? "rounded-full bg-green-100 dark:bg-green-950/60 px-3 py-1 text-xs font-medium text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800"
-              : "rounded-full bg-red-100 dark:bg-red-950/60 px-3 py-1 text-xs font-medium text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800"
+            employee.status === 'Active'
+              ? 'rounded-full bg-green-100 dark:bg-green-950/60 px-3 py-1 text-xs font-medium text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800'
+              : 'rounded-full bg-red-100 dark:bg-red-950/60 px-3 py-1 text-xs font-medium text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800'
           }
         >
           {employee.status}
@@ -79,6 +81,6 @@ function EmployeeCard({
       </div>
     </div>
   );
-}
+});
 
 export default EmployeeCard;

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 import EmployeeList from './EmployeeLIst';
 import CreateEmployee from './CreateEmployee';
@@ -14,7 +14,7 @@ interface EmployeeModalState {
   selectedEmployee: Employee | null;
 }
 
-const INITIAL_MODAL_STATE: EmployeeModalState = {
+const INITIAL_STATE = {
   isCreating: false,
   selectedEmployee: null,
 };
@@ -37,38 +37,39 @@ function Employees() {
   } = useEmployeeFilters(employees);
 
   // Clubbed modal/form state
-  const [modalState, setModalState] = useState<EmployeeModalState>(INITIAL_MODAL_STATE);
+  const [modalState, setModalState] = useState<EmployeeModalState>(INITIAL_STATE);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleToggleCreate = (): void => {
+  // Performance Optimization: useCallback ensures stable references for memoized child components
+  const handleToggleCreate = useCallback((): void => {
     setModalState((prev) => ({
       selectedEmployee: null,
       isCreating: !prev.isCreating,
     }));
-  };
+  }, []);
 
-  const handleEdit = (employee: Employee): void => {
+  const handleEdit = useCallback((employee: Employee): void => {
     setModalState({
       isCreating: false,
       selectedEmployee: employee,
     });
-  };
+  }, []);
 
-  const handleCancelEdit = (): void => {
+  const handleCancelEdit = useCallback((): void => {
     setModalState((prev) => ({
       ...prev,
       selectedEmployee: null,
     }));
-  };
+  }, []);
 
-  const handleUpdate = async (id: number, employee: UpdateEmployeeInput): Promise<void> => {
+  const handleUpdate = useCallback(async (id: number, employee: UpdateEmployeeInput): Promise<void> => {
     await updateEmployee(id, employee);
     setModalState((prev) => ({
       ...prev,
       selectedEmployee: null,
     }));
-  };
+  }, [updateEmployee]);
 
   const hasActiveFilters = search !== '' || department !== 'All' || status !== 'All';
 

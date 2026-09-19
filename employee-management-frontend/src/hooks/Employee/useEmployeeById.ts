@@ -8,34 +8,23 @@ export interface EmployeeDetailState {
   error: string | null;
 }
 
-const INITIAL_STATE: EmployeeDetailState = {
-  employee: null,
-  isLoading: true,
-  error: null,
-};
-
 function useEmployeeById(id: number) {
-  const [state, setState] = useState<EmployeeDetailState>(INITIAL_STATE);
+  const isValidId = Boolean(id && !isNaN(id));
+
+  const [state, setState] = useState<EmployeeDetailState>(() => ({
+    employee: null,
+    isLoading: isValidId,
+    error: null,
+  }));
 
   useEffect(() => {
     if (!id || isNaN(id)) {
-      setState({
-        employee: null,
-        isLoading: false,
-        error: null,
-      });
       return;
     }
 
     let isMounted = true;
 
     async function fetchEmployeeById() {
-      setState({
-        employee: null,
-        isLoading: true,
-        error: null,
-      });
-
       try {
         const data = await getEmployeeById(id);
         if (isMounted) {

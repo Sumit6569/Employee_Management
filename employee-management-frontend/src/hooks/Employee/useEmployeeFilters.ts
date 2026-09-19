@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import type { Employee } from '../../Types/EmployeeTypes';
 
 export interface EmployeeFilterState {
@@ -32,19 +32,19 @@ function useEmployeeFilters(employees: Employee[]) {
     setFilters(INITIAL_FILTERS);
   };
 
-  const filterdEmployee = employees.filter((employee) => {
-    const matchesSearch = employee.name
-      .toLowerCase()
-      .includes(filters.search.toLowerCase());
+  // Performance Optimization: useMemo avoids re-filtering on unrelated re-renders
+  const filterdEmployee = useMemo(() => {
+    const searchLower = filters.search.toLowerCase();
+    return employees.filter((employee) => {
+      const matchesSearch = employee.name.toLowerCase().includes(searchLower);
+      const matchesDepartment =
+        filters.department === 'All' || employee.department === filters.department;
+      const matchStatus =
+        filters.status === 'All' || employee.status === filters.status;
 
-    const matchesDepartment =
-      filters.department === 'All' || employee.department === filters.department;
-
-    const matchStatus =
-      filters.status === 'All' || employee.status === filters.status;
-
-    return matchesSearch && matchesDepartment && matchStatus;
-  });
+      return matchesSearch && matchesDepartment && matchStatus;
+    });
+  }, [employees, filters.search, filters.department, filters.status]);
 
   return {
     filterdEmployee,

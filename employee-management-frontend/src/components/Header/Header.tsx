@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import ThemeToggle from '../TheameToggle/ThemeToggle';
 import { useAuth } from '../../context/AuthContext';
 
@@ -10,12 +11,12 @@ function Header() {
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xs px-6 text-gray-900 dark:text-white shadow-xs transition-colors duration-200">
       <div className="flex items-center gap-3">
-        <h1 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white hidden sm:block">
+        <Link to="/" className="text-lg font-bold tracking-tight text-gray-900 dark:text-white hidden sm:block hover:text-blue-600 transition-colors">
           Employee Management System
-        </h1>
-        <h1 className="text-lg font-bold tracking-tight text-gray-900 dark:text-white sm:hidden">
+        </Link>
+        <Link to="/" className="text-lg font-bold tracking-tight text-gray-900 dark:text-white sm:hidden hover:text-blue-600 transition-colors">
           EMS
-        </h1>
+        </Link>
       </div>
 
       <div className="flex items-center gap-3 sm:gap-4">
@@ -23,8 +24,12 @@ function Header() {
 
         <div className="h-5 w-px bg-gray-200 dark:bg-gray-700" />
 
-        {/* User Info & Avatar */}
-        <div className="flex items-center gap-2.5">
+        {/* User Info & Avatar links to Profile */}
+        <Link
+          to="/profile"
+          title="View profile"
+          className="flex items-center gap-2.5 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors"
+        >
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 font-semibold text-xs text-white shadow-xs ring-2 ring-blue-500/20">
             {auth.username?.[0]?.toUpperCase() || 'U'}
           </div>
@@ -37,7 +42,7 @@ function Header() {
               {primaryRole}
             </span>
           </div>
-        </div>
+        </Link>
 
         <div className="h-5 w-px bg-gray-200 dark:bg-gray-700" />
 

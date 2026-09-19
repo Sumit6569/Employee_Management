@@ -20,7 +20,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
       if (savedTheme === 'light' || savedTheme === 'dark') {
         return savedTheme;
       }
-    } catch (_err) {
+    } catch {
       // Ignore storage access restrictions
     }
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -39,7 +39,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     }
     try {
       localStorage.setItem('theme', theme);
-    } catch (_err) {
+    } catch {
       // Ignore storage write restrictions
     }
   }, [theme]);

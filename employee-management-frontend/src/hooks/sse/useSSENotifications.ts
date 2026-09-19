@@ -102,7 +102,7 @@ export function useSSENotifications(): void {
             }
           }, delay);
         };
-      } catch (_err) {
+      } catch {
         if (!isMountedRef.current) return;
 
         // If ticket exchange failed, schedule retry with backoff
